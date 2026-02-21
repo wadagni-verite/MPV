@@ -1,0 +1,74 @@
+Python
+# fine_tuning_pipeline.py
+
+class OHADALegalFineTuner:
+    """
+    Fine-tuning léger (LoRA) pour adaptation au droit OHADA
+    """
+    
+    def prepare_training_data(self):
+        """
+        Génération des paires (instruction, réponse) juridiques
+        """
+        training_examples = []
+        
+        # Type 1: Questions de droit pur
+        for article in self.corpus_ohada:
+            training_examples.append({
+                "instruction": f"Quelle est la procédure de {article.concept} selon {article.source}?",
+                "input": f"Contexte: {article.content}",
+                "output": self.generate_legal_response(article)
+            })
+            
+        # Type 2: Scénarios de conformité
+        for scenario in self.scenarios_compliance:
+            training_examples.append({
+                "instruction": "Un établissement de paiement UEMOA doit-il appliquer la LCB-FT sur les transactions de 500 000 FCFA?",
+                "input": f"Type: {scenario.institution}, Montant: {scenario.montant}",
+                "output": self.analyze_compliance_scenario(scenario)
+            })
+            
+        # Type 3: Génération de documents
+        for template in self.templates_documents:
+            training_examples.append({
+                "instruction": f"Rédige une {template.type} pour {template.context}",
+                "input": f"Institution: {template.institution}, Obligations: {template.obligations}",
+                "output": self.generate_document(template)
+            })
+            
+        return training_examples
+    
+    def train_lora_adapter(self, base_model="mistralai/Mistral-7B-v0.1"):
+        """
+        Fine-tuning LoRA (Low-Rank Adaptation) - efficient et rapide
+        """
+        from peft import LoraConfig, get_peft_model
+        
+        config = LoraConfig(
+            r=64,  # rank
+            lora_alpha=128,
+            target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+            lora_dropout=0.05,
+            bias="none",
+            task_type="CAUSAL_LM"
+        )
+        
+        # Entraînement sur 10k exemples juridiques
+        # ~2-4 heures sur A100, coût: ~50€
+        
+        return get_peft_model(base_model, config)
+    
+    def evaluate_legal_accuracy(self, model):
+        """
+        Évaluation spécifique sur benchmarks juridiques OHADA
+        """
+        test_cases = [
+            {
+                "question": "Quel est le délai de forclusion des créanciers dans une procédure de redressement judiciaire?",
+                "expected": "Article 12 de l'Acte Uniforme OHADA sur les procédures collectives: 3 mois à compter du jugement d'ouverture",
+                "citations_required": ["Acte Uniforme Procédures Collectives", "Article 12"]
+            },
+            # ... 500 cas de test
+        ]
+        
+        return self.run_benchmark(model, test_cases)

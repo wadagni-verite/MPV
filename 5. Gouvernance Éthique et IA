@@ -10,3 +10,15 @@ Missions:
 - Examen des cas litigieux
 - Veille évolutions réglementaires IA (UE AI Act, etc.)
 - Validation politique d'utilisation données clients
+
+Comité d'Éthique IA (institutionnel)
+├── Représentant BCEAO (observateur invité)
+├── Avocat partenaire (président)
+├── Expert LCB-FT
+└── CEO LexIA
+
+Missions:
+- Validation des réponses IA avant déploiement
+- Examen des cas litigieux
+- Veille évolutions réglementaires
+

@@ -1,0 +1,57 @@
+Json
+{
+  "vector_schema": {
+    "id": "uuid",
+    "content": "texte juridique complet",
+    "embedding": "vector(1536)",
+    
+    "metadata": {
+      "source": {
+        "type": "acte_uniforme|circulaire|directive|decision|traite",
+        "code": "SYSCOHADA|OHADA|BCEAO|BEAC|CIMA|CEDEAO",
+        "titre": "string",
+        "numero": "string",
+        "date_publication": "date",
+        "date_application": "date",
+        "etat": "vigueur|abroge|modifie|projet",
+        "url_officiel": "url"
+      },
+      
+      "structure": {
+        "acte_uniforme": "string|null",
+        "titre": "string|null",
+        "chapitre": "string|null",
+        "section": "string|null",
+        "article": "string",
+        "alinea": "string|null",
+        "paragraphe": "string|null"
+      },
+      
+      "thematique": {
+        "domaine": ["comptabilite|droit_commercial|procedure_collective|arbitrage|...}"],
+        "sous_domaine": ["normes_comptables|creances|suretes|redressement_judiciaire|...}"],
+        "concepts_cles": ["entreprise_en_difficulte", "creancier_privilegie", "bilan"],
+        "entites": ["BCEAO", "Commission_bancaire", "CREPMF"]
+      },
+      
+      "applicabilite": {
+        "zones_geographiques": ["UEMOA", "CEMAC", "OHADA"],
+        "types_institutions": ["banque", "microfinance", "fintech", "assurance"],
+        "obligations": ["KYC", "LCB-FT", "reporting_prudentiel", "gouvernance"]
+      },
+      
+      "relations": {
+        "modifie_par": ["uuid_ref"],
+        "abroge_par": ["uuid_ref"],
+        "cite_dans": ["uuid_ref"],
+        "jurisprudence_associee": ["uuid_ref"]
+      },
+      
+      "versioning": {
+        "version": "integer",
+        "date_indexation": "datetime",
+        "hash_contenu": "sha256"
+      }
+    }
+  }
+}

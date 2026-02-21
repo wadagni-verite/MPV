@@ -1,0 +1,69 @@
+Python
+# llm_router.py - Orchestration intelligente des modèles
+
+class LegalLLMRouter:
+    """
+    Route les requêtes vers le meilleur modèle selon la complexité et le domaine
+    """
+    
+    def __init__(self):
+        self.models = {
+            'claude-3-opus': {
+                'client': AnthropicClient(),
+                'cost_per_1k': 0.015,
+                'strengths': ['raisonnement_complexe', 'jurisprudence', 'analyse_multidoc'],
+                'context': 200000
+            },
+            'claude-3-sonnet': {
+                'client': AnthropicClient(),
+                'cost_per_1k': 0.003,
+                'strengths': ['generation_documents', 'q&a_standard', 'veille'],
+                'context': 200000
+            },
+            'gpt-4-turbo': {
+                'client': OpenAIClient(),
+                'cost_per_1k': 0.01,
+                'strengths': ['fallback', 'comparaison_droit_compare'],
+                'context': 128000
+            },
+            'local-mistral-ohada': {
+                'client': VLLMClient(),
+                'cost_per_1k': 0.0001,
+                'strengths': ['questions_simples', 'extraction_informations', 'low_latency'],
+                'context': 32000
+            }
+        }
+        
+    async def route_query(self, query: LegalQuery) -> ModelResponse:
+        """
+        Classification de la requête et routing optimal
+        """
+        # Analyse de la complexité
+        complexity = self.assess_complexity(query)
+        domain = self.classify_domain(query)
+        urgency = query.metadata.get('urgency', 'normal')
+        
+        # Règles de routing
+        if complexity == 'high' or domain == 'jurisprudence_complexe':
+            model = 'claude-3-opus'
+        elif complexity == 'medium' and domain in ['compliance_kyc', 'reporting']:
+            model = 'claude-3-sonnet'
+        elif urgency == 'high' and complexity == 'low':
+            model = 'local-mistral-ohada'
+        else:
+            model = 'claude-3-sonnet'  # default
+            
+        # Récupération contextuelle enrichie
+        context = await self.retrieval_engine.get_context(query)
+        
+        # Génération avec le modèle sélectionné
+        response = await self.models[model]['client'].generate(
+            prompt=self.build_legal_prompt(query, context),
+            temperature=0.2,  # Faible créativité pour la précision juridique
+            max_tokens=4000
+        )
+        
+        # Post-traitement juridique (vérification citations, cohérence)
+        validated_response = self.legal_validator.validate(response)
+        
+        return validated_response

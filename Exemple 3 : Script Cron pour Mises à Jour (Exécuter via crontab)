@@ -1,0 +1,8 @@
+# cron.py
+import requests  # Pour scraping updates
+
+def check_updates():
+    # Logique: comparer hashes PDFs vs. versions locales
+    print("Vérification mises à jour BCEAO...")
+
+# Crontab: 0 0 * * * python cron.py

@@ -1,0 +1,58 @@
+# legal_practice_model.py
+
+class LegalPracticeCompliance:
+    """
+    Modèle de conformité pour l'exercice du droit en Afrique francophone
+    """
+    
+    def __init__(self):
+        self.restrictions = {
+            'conseil_juridique': 'RESERVE_AUX_AVOCATS',
+            'representation_justice': 'RESERVE_AUX_AVOCATS', 
+            'redaction_actes_juridiques': 'RESERVE_AUX_AVOCATS',
+            'conformite_technique': 'AUTORISE_AUX_CONSULTANTS',
+            'veille_reglementaire': 'AUTORISE_AUX_CONSULTANTS',
+            'formation': 'AUTORISE_AUX_CONSULTANTS'
+        }
+        
+    def service_classification(self, service_type):
+        """
+        Classification des services selon la réglementation locale
+        """
+        classifications = {
+            'ia_qa_juridique': {
+                'nature': 'information_juridique',
+                'restriction': 'none',
+                'condition': 'disclaimer_obligatoire + validation_humaine'
+            },
+            'generation_policies': {
+                'nature': 'redaction_acte',
+                'restriction': 'avocat_obligatoire',
+                'condition': 'co-signature_avocat_partenaire'
+            },
+            'accompagnement_agrement': {
+                'nature': 'conseil_juridique',
+                'restriction': 'avocat_obligatoire',
+                'condition': 'mission_formelle_cabinet_partenaire'
+            },
+            'audit_compliance': {
+                'nature': 'expertise_technique',
+                'restriction': 'none',
+                'condition': 'certification_professionnelle'
+            }
+        }
+        return classifications.get(service_type)
+    
+    def generate_disclaimer(self, service_type, user_type):
+        """
+        Génération des disclaimers contextuels
+        """
+        base = "Ce service est fourni à titre informatif et ne constitue pas un conseil juridique."
+        
+        if service_type == 'ia_qa_juridique':
+            return f"{base} Les réponses de l'IA doivent être validées par un juriste avant toute décision. [Nom Plateforme] décline toute responsabilité quant à l'interprétation des textes."
+            
+        elif service_type == 'premium_consulting':
+            return f"{base} Cette prestation est réalisée sous la supervision de [Cabinet Partenaire], avocats au Barreau de [Ville]."
+            
+        return base

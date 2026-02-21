@@ -1,0 +1,15 @@
+import re
+import spacy  # pip install spacy; python -m spacy download fr_core_news_sm
+
+nlp = spacy.load("fr_core_news_sm")
+
+def extract_dates(text):
+    pattern = r'\b(avant|au plus tard) le (\d{1,2}) (du|de chaque) mois\b'
+    matches = re.findall(pattern, text)
+    doc = nlp(text)
+    # Ajouter contexte NLP si needed
+    return matches
+
+# Test
+text = "Les rapports doivent être soumis avant le 15 du mois."
+print(extract_dates(text))  # Output: [('avant', '15', 'du')]

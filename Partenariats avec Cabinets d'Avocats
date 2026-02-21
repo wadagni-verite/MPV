@@ -1,0 +1,29 @@
+┌─────────────────────────────────────────────────────────────┐
+│                    VOTRE PLATEFORME                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │  IA Engine  │  │  Dashboard  │  │  Document Generator │  │
+│  └──────┬──────┘  └─────────────┘  └──────────┬──────────┘  │
+│         │                                      │             │
+│         └──────────────┬───────────────────────┘             │
+│                        │                                     │
+│              ┌─────────▼──────────┐                         │
+│              │  Validation Layer  │ ◄── Avocats partenaires │
+│              │  (API sécurisée)   │     (co-signature)      │
+│              └─────────┬──────────┘                         │
+└────────────────────────┼────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│              CABINETS PARTENAIRES                            │
+│                                                              │
+│  Côte d'Ivoire: Cabinet [X] - 5 avocats spécialisés droit   │
+│                 des affaires, banque, OHADA                  │
+│                 Rôle: Validation documents, representation    │
+│                 Commission: 15-25% sur missions conseil       │
+│                                                              │
+│  Sénégal: Cabinet [Y] - 3 avocats, expertise fintech        │
+│           Rôle: Agréments, contentieux réglementaire          │
+│           Commission: 15-25%                                 │
+│                                                              │
+│  Cameroun: Cabinet [Z] - Expertise CEMAC, CIMA              │
+│            Rôle: Expansion zone CEMAC                         │
+└─────────────────────────────────────────────────────────────┘

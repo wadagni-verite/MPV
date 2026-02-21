@@ -1,0 +1,32 @@
+yaml
+# security_architecture.yaml
+
+security_layers:
+  encryption:
+    at_rest: "AES-256-GCM pour données en base"
+    in_transit: "TLS 1.3 obligatoire"
+    end_to_end: "Chiffrement des documents clients clés par client"
+    
+  authentication:
+    primary: "OAuth 2.0 + OIDC"
+    mfa: "TOTP obligatoire pour admin, optionnel pour users"
+    sso: "SAML 2.0 pour intégration entreprises"
+    
+  authorization:
+    model: "RBAC + ABAC (Attribute-Based)"
+    roles: [super_admin, legal_validator, compliance_officer, client_admin, client_user, auditor]
+    
+  audit:
+    immutability: "Logs append-only dans blockchain interne (Hyperledger)"
+    retention: "10 ans pour données juridiques, 7 ans pour logs"
+    tamper_proof: "Signatures cryptographiques des logs"
+    
+  data_residency:
+    primary: "AWS Afrique (Afrique du Sud) ou Azure Afrique du Sud"
+    secondary: "Local cloud provider (Sénégal: SENEcloud, Côte d'Ivoire: CICloud)"
+    cross_border: "Chiffrement avant transfert, contrats DPA conformes RGPD"
+    
+  compliance_certifications:
+    target_year_1: ["ISO 27001", "SOC 2 Type I"]
+    target_year_2: ["SOC 2 Type II", "ISO 27017 (cloud)"]
+    specific: "Conformité instruction BCEAO 001-10-2015 (sécurité données)"

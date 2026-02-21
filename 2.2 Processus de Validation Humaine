@@ -1,0 +1,50 @@
+# validation_workflow.py
+
+class HumanValidationWorkflow:
+    """
+    Workflow de validation obligatoire pour les documents juridiquement contraignants
+    """
+    
+    async def process_document(self, doc: GeneratedDocument) -> ValidatedDocument:
+        """
+        Processus de validation selon le type de document
+        """
+        
+        if doc.risk_level == 'high':
+            # Documents nécessitant validation avocat obligatoire
+            validation = await self.assign_to_lawyer(doc)
+            validation = await self.legal_review(validation)
+            validation = await self.client_approval(validation)
+            
+        elif doc.risk_level == 'medium':
+            # Validation juriste interne suffisante
+            validation = await self.internal_legal_review(doc)
+            
+        else:
+            # Validation automatique avec audit trail
+            validation = await self.automated_validation(doc)
+            
+        return validation
+    
+    async def assign_to_lawyer(self, doc):
+        """
+        Assignment intelligent vers avocat partenaire selon spécialité
+        """
+        lawyer_pool = {
+            'ohada_commercial': ['cabinet_x_avocat_1', 'cabinet_x_avocat_2'],
+            'banque_reglementation': ['cabinet_x_avocat_3'],
+            'fintech_agrement': ['cabinet_y_avocat_1'],
+            'cima_assurance': ['cabinet_z_avocat_1']
+        }
+        
+        selected = self.match_lawyer(doc.domain, doc.complexity, doc.urgency)
+        
+        # Création mission formelle via API partenaire
+        mission = await self.create_mission_formelle(
+            lawyer=selected,
+            document=doc,
+            fee_structure='success_fee_15pct',
+            deadline=doc.deadline
+        )
+        
+        return mission

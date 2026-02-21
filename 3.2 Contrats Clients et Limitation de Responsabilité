@@ -1,0 +1,48 @@
+# contract_templates.py
+
+class ClientContractTemplates:
+    """
+    Templates de contrats adaptés par segment client
+    """
+    
+    def saas_terms(self, client_tier):
+        """
+        Conditions générales SaaS avec limitation de responsabilité
+        """
+        return {
+            'liability_cap': {
+                'startup': '12_mois_abonnement',
+                'enterprise': '24_mois_abonnement_ou_500k€',
+                'strategic': 'negotiable'
+            },
+            
+            'warranties': {
+                'availability': '99.9% SLA',
+                'data_security': 'ISO 27001 certified',
+                'ai_accuracy': 'Best effort, validation humaine recommandée'
+            },
+            
+            'exclusions': [
+                'Consequences de decisions prises sur base IA non validee',
+                'Evolutions reglementaires post-contrat non couvertes',
+                'Usage non conforme aux specifications'
+            ],
+            
+            'compliance_obligations': {
+                'client': 'Maintenir licences à jour, valider documents sensibles',
+                'provider': 'Veille reglementaire, mises à jour mensuelles'
+            }
+        }
+    
+    def consulting_agreement(self, mission_type):
+        """
+        Contrats de conseil via partenaires avocats
+        """
+        if mission_type == 'agrement_fintech':
+            return {
+                'parties': 'Client ↔ Cabinet Partenaire (pas la plateforme)',
+                'mission': 'Accompagnement agrement EMI/PSP',
+                'honoraires': 'Forfait 15-30k€ + success fee',
+                'responsabilite': 'Cabinet partenaire seul responsable',
+                'plateforme_role': 'Outil support, facturation via commission'
+            }

@@ -1,0 +1,26 @@
+# ai_ethics_charter.py
+
+ethics_charter = {
+    'transparence': {
+        'explicabilite': 'Toute réponse IA indique les sources juridiques utilisées',
+        'tracabilite': 'Audit trail complet des décisions IA',
+        'humain_dans_la_boucle': 'Validation obligatoire pour documents contraignants'
+    },
+    
+    'non_discrimination': {
+        'equite': 'Algorithmes testés contre biais géographiques (petits vs grands pays)',
+        'accessibilite': 'Interface adaptée aux faibles bandes passantes'
+    },
+    
+    'protection_donnees': {
+        'minimisation': 'Données clients utilisées uniquement pour personnalisation',
+        'consentement': 'Opt-in explicite pour entraînement modèles',
+        'droit_oubli': 'Suppression possible des données d'entraînement sur demande'
+    },
+    
+    'responsabilite': {
+        'limitation': 'L'IA est un outil d'aide, pas un substitut au conseil juridique',
+        'recours': 'Procédure de contestation des réponses IA',
+        'assurance': 'Couverture spécifique erreurs algorithmiques'
+    }
+}

@@ -1,0 +1,75 @@
+2.1 Pipeline de Traitement des Documents Juridiques
+Python
+# architecture_rag.py - Vue conceptuelle du pipeline
+
+class OHADALegalRAG:
+    """
+    Pipeline RAG spécialisé pour le droit OHADA, UEMOA, CEMAC
+    """
+    
+    def __init__(self):
+        self.document_processors = {
+            'actes_uniformes': ActeUniformeProcessor(),
+            'circulaires_bceao': CirculaireBCEAOProcessor(),
+            'directives_beac': DirectiveBEACProcessor(),
+            'decisions_cima': DecisionCIMAProcessor(),
+            'traites_cedeao': TraiteCEDEAOProcessor(),
+            'jurisprudence': JurisprudenceProcessor()
+        }
+        
+    async def process_legal_document(self, doc: LegalDocument) -> ProcessedChunk:
+        """
+        Traitement spécifique par type de document juridique
+        """
+        processor = self.document_processors[doc.type]
+        
+        # Étape 1: Extraction structurée
+        structured = await processor.extract_structure(doc)
+        
+        # Étape 2: Enrichissement sémantique
+        enriched = self.enrich_with_metadata(structured)
+        
+        # Étape 3: Chunking intelligent (respect de la cohérence juridique)
+        chunks = self.legal_aware_chunking(enriched)
+        
+        # Étape 4: Génération des embeddings
+        embeddings = await self.generate_embeddings(chunks)
+        
+        return embeddings
+    
+    def legal_aware_chunking(self, doc: StructuredDocument) -> List[LegalChunk]:
+        """
+        Chunking qui préserve l'intégrité juridique:
+        - Articles complets (pas de coupure au milieu d'un article)
+        - Contexte hiérarchique (Titre/Chapitre/Section/Article)
+        - Références croisées préservées
+        """
+        chunks = []
+        current_context = {
+            'traité': doc.traite,
+            'acte_uniforme': doc.acte_uniforme,
+            'titre': None,
+            'chapitre': None,
+            'section': None
+        }
+        
+        for element in doc.elements:
+            if element.type == 'TITRE':
+                current_context['titre'] = element.content
+            elif element.type == 'CHAPITRE':
+                current_context['chapitre'] = element.content
+                
+            chunk = LegalChunk(
+                content=element.content,
+                metadata={
+                    **current_context,
+                    'article_num': element.article_num,
+                    'date_publication': doc.date_pub,
+                    'date_application': doc.date_app,
+                    'etat': doc.etat,  # en vigueur, abrogé, modifié
+                    'references': element.references_croisees
+                }
+            )
+            chunks.append(chunk)
+            
+        return chunks
